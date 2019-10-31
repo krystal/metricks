@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    metricks (1.0.0)
-      activerecord (>= 5.0)
-      with_advisory_lock (>= 4.6)
+    metricks (1.0.1)
+      activerecord (>= 5.0, < 7.0)
+      with_advisory_lock (>= 4.6, < 5.0)
 
 GEM
   remote: https://rubygems.org/
