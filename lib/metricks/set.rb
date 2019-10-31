@@ -45,8 +45,8 @@ module Metricks
 
           if point.nil?
             proposed_values = { count: 0 }
-            proposed_values[:sum] = 0.0
-            proposed_values[:last] = 0.0
+            proposed_values[:sum] = @type.transform_amount(0.0, @associations)
+            proposed_values[:last] = @type.transform_amount(0.0, @associations)
 
             if i.zero?
               # We'll need to lookup the last previous value from the
