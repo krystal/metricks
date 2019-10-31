@@ -70,6 +70,7 @@ module Metricks
       @raw_metrics ||= begin
         scope = Models::Metric.where(type: @type.id)
         scope = scope.where(time: @start_time..@end_time)
+
         if @associations
           scope = @type.add_associations_to_scope(scope, @associations)
         end
@@ -89,8 +90,6 @@ module Metricks
 
     def last_values
       @last_values ||= begin
-        return {} unless @type.cumulative?
-
         ids = raw_metrics.map(&:last_id)
         Models::Metric.where(id: ids).each_with_object({}) do |m, hash|
           hash[m.id] = m
@@ -117,7 +116,7 @@ module Metricks
             time: GROUPING[@group][:time_creator].call(metric),
             sum: @type.transform_amount(metric.sum.to_f, @associations),
             count: metric.count,
-            last: last_value ? @type.transform_amount(last_value.to_f) : nil
+            last: last_value ? @type.transform_amount(last_value.to_f, @associations) : nil
           )
         end
       end
