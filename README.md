@@ -173,12 +173,12 @@ The comparison options allow you to compare multiple sets at the same time. The 
 ```ruby
 compared_set = Metrics::PotatoesPicked.compare(:month, end_time: Time.utc(2019, 12))
 
-compared_set.a # => The Metricks::Set for 2019-01 to 2019-12
-compared_set.b # => The Metricks::Set for 2018-01 to 2018-12
+compared_set.a      # => The Metricks::Set for 2019-01 to 2019-12
+compared_set.b      # => The Metricks::Set for 2018-01 to 2018-12
 compared_set.points #=> [Metricks::ComparedPoint, Metricks::ComparedPoint, ...]
 
-compared_set.points.first  #=> A point containing data for 2019-01-01 and 2018-01-01
-compared_set.points.last  #=> A point containing data for 2019-12-01 and 2018-12-01
+compared_set.points.first   # => A point containing data for 2019-01-01 and 2018-01-01
+compared_set.points.last    # => A point containing data for 2019-12-01 and 2018-12-01
 ```
 
 Unlike normal sets, a compared set will always be filled to ensure that data from both periods can be matched.
@@ -189,8 +189,8 @@ Looking at the points from our compared set you'll see that they're instances of
 compared_point = compared_set.points.first
 
 compared_point.sum                    # => Metricks::Comparison
-compared_point.sum.a                  #=> The value from 2019-01-01
-compared_point.sum.b                  #=> The value from 2018-01-01
+compared_point.sum.a                  # => The value from 2019-01-01
+compared_point.sum.b                  # => The value from 2018-01-01
 compared_point.sum.difference         # => The difference bween 2019-01 and 2018-01
 compared_point.sum.percentage_change  # => The % change between 2019-01 and 2018-01
 
