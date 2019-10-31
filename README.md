@@ -33,7 +33,7 @@ Metrics are all stored in the `metrics` table. It is expected this table may get
 
 **The type of each metric is represented by a 32-bit integer in the database.** When you define your metric types you will need to specify an ID. This ID must be unique for this type of metric across your whole application.
 
-#### Evented metrics
+#### Evented metrics
 
 An event metric should inherit from `Metricks::Types::Evented` and at its most basic form will look like the below.
 
