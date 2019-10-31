@@ -35,10 +35,11 @@ module Metricks
           metric = self.new
           metric.type = type.id
           metric.time = options[:time] || Time.current
-          metric.amount = options[:amount] || 1
 
           type.on_record(metric, options)
           type.copy_associations(metric, options[:associations])
+
+          metric.amount ||= options[:amount] || 1
 
           if type.cumulative?
             with_advisory_lock 'AddCumulativeMetric' do
@@ -48,9 +49,8 @@ module Metricks
                 raise Metricks::Error.new('CannotAddHistoricalCumulativeMetrics', message: "Nope.")
               end
 
-
               previous = self.latest(type, associations: options[:associations])
-              metric.amount = previous + metric.amount
+              metric.amount = (previous + type.transform_amount(metric.amount, options[:associations])).to_f
               metric.save!
             end
           else
