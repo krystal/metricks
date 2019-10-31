@@ -17,7 +17,7 @@ module Metricks
       return 0 if diff.zero?
       return nil if @b.zero?
 
-      diff / @b.to_f * 100.0
+      (diff.to_f / @b.to_f) * 100.0
     end
   end
 end
