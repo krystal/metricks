@@ -146,14 +146,43 @@ describe Metricks::Models::Metric do
       expect(value).to eq 140
     end
 
-    it 'should return the latest metric for the given associations' do
+    it 'should return the latest metric for the given associations (using exact matching for cumulative)' do
+      Metricks::Models::Metric.record(TotalPotatoesSold, amount: 50)
       Metricks::Models::Metric.record(TotalPotatoesSold, amount: 12, associations: { currency: 1 })
+      Metricks::Models::Metric.record(TotalPotatoesSold, amount: 15, associations: { currency: 1, field: 20 })
+
+      value = Metricks::Models::Metric.latest(TotalPotatoesSold)
+      expect(value).to eq 50
+
       value = Metricks::Models::Metric.latest(TotalPotatoesSold, associations: { currency: 1 })
       expect(value).to eq 12
 
-      Metricks::Models::Metric.record(TotalPotatoesSold, amount: 44, associations: { currency: 2 })
-      value = Metricks::Models::Metric.latest(TotalPotatoesSold, associations: { currency: 2 })
-      expect(value).to eq 44
+      value = Metricks::Models::Metric.latest(TotalPotatoesSold, associations: { currency: 1, field: 20 })
+      expect(value).to eq 15
+    end
+
+    it 'should return the latest metric for the given associations (using non-exact matching for evented)' do
+      Metricks::Models::Metric.record(SpoiledPotatos, amount: 2)
+      Metricks::Models::Metric.record(SpoiledPotatos, amount: 4, associations: { field: 1 })
+      Metricks::Models::Metric.record(SpoiledPotatos, amount: 9, associations: { field: 1, spoil_type: 20 })
+
+      value = Metricks::Models::Metric.latest(SpoiledPotatos)
+      expect(value).to eq 9
+
+      value = Metricks::Models::Metric.latest(SpoiledPotatos, associations: { field: nil, spoil_type: nil })
+      expect(value).to eq 2
+
+      value = Metricks::Models::Metric.latest(SpoiledPotatos, associations: { field: 1 })
+      expect(value).to eq 9
+
+      value = Metricks::Models::Metric.latest(SpoiledPotatos, associations: { field: 1, spoil_type: nil })
+      expect(value).to eq 4
+
+      value = Metricks::Models::Metric.latest(SpoiledPotatos, associations: { spoil_type: 20 })
+      expect(value).to eq 9
+
+      value = Metricks::Models::Metric.latest(SpoiledPotatos, associations: { field: 1, spoil_type: 20 })
+      expect(value).to eq 9
     end
   end
 
@@ -179,6 +208,72 @@ describe Metricks::Models::Metric do
       set = Metricks::Models::Metric.gather(PotatoesPickedAsInteger, :hour)
       expect(set.points.first.sum).to be_a Integer
       expect(set.points.first.sum).to eq 10
+    end
+
+    context 'association filtering' do
+      context 'on evented metrics' do
+        it 'should look up based on non-exact associations' do
+          SpoiledPotatos.record(time: Time.utc(2019, 10, 31, 2, 1))
+          SpoiledPotatos.record(associations: {field: 1}, time: Time.utc(2019, 10, 31, 2, 2))
+          SpoiledPotatos.record(associations: {field: 1, spoil_type: 2}, time: Time.utc(2019, 10, 31, 2, 3))
+
+          set = SpoiledPotatos.gather(:hour, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.count).to eq 3
+
+          set = SpoiledPotatos.gather(:hour, associations: {}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.count).to eq 3
+
+          set = SpoiledPotatos.gather(:hour, associations: {field: 1}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.count).to eq 2
+
+          set = SpoiledPotatos.gather(:hour, associations: {field: nil}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.count).to eq 1
+
+          set = SpoiledPotatos.gather(:hour, associations: {field: 1, spoil_type: 2}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.count).to eq 1
+
+          set = SpoiledPotatos.gather(:hour, associations: {spoil_type: 2}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.count).to eq 1
+
+          set = SpoiledPotatos.gather(:hour, associations: {field: 1, spoil_type: nil}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.count).to eq 1
+
+          set = SpoiledPotatos.gather(:hour, associations: {field: 2}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.size).to eq 0
+        end
+      end
+
+      context 'on cumulative metrics' do
+        it 'should look up based on exact associations' do
+          TotalPotatoesSold.record(amount: 10, time: Time.utc(2019, 10, 31, 2, 1))
+          TotalPotatoesSold.record(amount: 20, associations: {field: 1}, time: Time.utc(2019, 10, 31, 2, 2))
+          TotalPotatoesSold.record(amount: 30, associations: {field: 1, currency: 2}, time: Time.utc(2019, 10, 31, 2, 3))
+
+          set = TotalPotatoesSold.gather(:hour, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.sum).to eq 10
+
+          set = TotalPotatoesSold.gather(:hour, associations: {}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.sum).to eq 10
+
+          set = TotalPotatoesSold.gather(:hour, associations: {field: 1}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.sum).to eq 20
+
+          set = TotalPotatoesSold.gather(:hour, associations: {field: nil}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.sum).to eq 10
+
+          set = TotalPotatoesSold.gather(:hour, associations: {field: 1, currency: 2}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.sum).to eq 30
+
+          set = TotalPotatoesSold.gather(:hour, associations: {currency: 2}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.size).to eq 0
+
+          set = TotalPotatoesSold.gather(:hour, associations: {field: 1, currency: nil}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.last.sum).to eq 20
+
+          set = TotalPotatoesSold.gather(:hour, associations: {field: 2}, end_time: Time.utc(2019, 10, 31, 2))
+          expect(set.points.size).to eq 0
+        end
+      end
     end
 
     context 'group by hour' do
@@ -502,7 +597,7 @@ describe Metricks::Models::Metric do
     end
 
     context 'group by associations' do
-      it 'should ' do
+      it 'should return a set of sets' do
         time = Time.utc(2019, 5, 10, 12)
 
         SpoiledPotatos.record(time: time - 1.day, amount: 10, associations: {field: 1})
@@ -511,7 +606,6 @@ describe Metricks::Models::Metric do
         SpoiledPotatos.record(time: time - 3.day, amount: 30, associations: {field: 2})
         SpoiledPotatos.record(time: time - 3.day, amount: 40, associations: {field: 2})
         SpoiledPotatos.record(time: time - 5.day, amount: 50, associations: {field: 2})
-
 
         group = Metricks::Models::Metric.gather(SpoiledPotatos, :day, group_by: :field, end_time: time)
         expect(group).to be_a Hash

@@ -97,6 +97,8 @@ module Metricks
         given_associations ||= {}
 
         associations.each do |assoc_name, assoc_details|
+          next if !given_associations.key?(assoc_name.to_sym) && !cumulative?
+
           scope = scope.where("association_#{assoc_details[:slot]}" => given_associations[assoc_name.to_sym])
         end
 

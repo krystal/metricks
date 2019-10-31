@@ -81,7 +81,7 @@ module Metricks
           scope = Metric.where(type: type.id).order(id: :desc)
           scope = scope.before(before) if before
           scope = scope.after(after) if after
-          scope = type.add_associations_to_scope(scope, associations) if associations
+          scope = type.add_associations_to_scope(scope, associations)
           scope
         end
 

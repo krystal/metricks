@@ -70,11 +70,7 @@ module Metricks
       @raw_metrics ||= begin
         scope = Models::Metric.where(type: @type.id)
         scope = scope.where(time: @start_time..@end_time)
-
-        if @associations
-          scope = @type.add_associations_to_scope(scope, @associations)
-        end
-
+        scope = @type.add_associations_to_scope(scope, @associations)
         scope = scope.select('SUM(amount) as sum, COUNT(*) as count, MAX(id) as last_id')
         scope = scope.select(*GROUPING[@group][:group_by])
         scope = scope.group(*GROUPING[@group][:group_by])

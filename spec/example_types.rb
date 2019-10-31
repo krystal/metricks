@@ -22,6 +22,7 @@ end
 class SpoiledPotatos < Metricks::Types::Evented
   id 40
   association 1, :field
+  association 2, :spoil_type
 end
 
 class PotatoesPickedAsInteger < Metricks::Types::Evented
