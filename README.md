@@ -137,7 +137,7 @@ set = Metrics::PotatoesPicked.gather(:day, end_time: 1.month.ago, quantity: 10)
 
 # If you wish to only get data for a certain association, you
 # can pass these.
-set = Metrics::PotatoesPicked.gather(:day, association: {field: 2})
+set = Metrics::PotatoesPicked.gather(:day, associations: {field: 2})
 
 # If you also wish to group by an association, this is possible as well.
 # In this case, you'll receive a hash with one item for each unique

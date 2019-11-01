@@ -43,7 +43,6 @@ module Metricks
 
           if type.cumulative?
             with_advisory_lock 'AddCumulativeMetric' do
-              # Validate the historical thing...
               existing = self.last(type, after: metric.time, associations: options[:associations])
               if existing.present?
                 raise Metricks::Error.new('CannotAddHistoricalCumulativeMetrics', message: "Nope.")
