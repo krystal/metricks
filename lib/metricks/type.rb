@@ -68,7 +68,7 @@ module Metricks
         elsif assoc[:model]
           value.is_a?(ActiveRecord::Base) ? value.id : value.to_i
         else
-          value
+          value.to_i
         end
       end
 
@@ -118,7 +118,8 @@ module Metricks
         associations.each do |assoc_name, assoc_details|
           next if !given_associations.key?(assoc_name.to_sym) && !cumulative?
 
-          scope = scope.where("association_#{assoc_details[:slot]}" => given_associations[assoc_name.to_sym])
+          value = serialize_association_value(assoc_name, given_associations[assoc_name.to_sym])
+          scope = scope.where("association_#{assoc_details[:slot]}" => value)
         end
 
         scope

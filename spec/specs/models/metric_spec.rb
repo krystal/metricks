@@ -147,6 +147,12 @@ describe Metricks::Models::Metric do
       expect(value).to eq 10
     end
 
+    it 'should map to an appropriate integer if association has a map' do
+      MetricWithAssociationWithMapping.record(amount: 15.0, associations: {field: 'Main Field'})
+      m = Metricks::Models::Metric.gather(MetricWithAssociationWithMapping, :hour, associations: {field: 'Main Field'})
+      expect(m.points.first.sum).to eq 15.0
+    end
+
     it 'should return the latest metric before a given timestamp' do
       Metricks::Models::Metric.record(TotalPotatoes, amount: 140, time: Time.utc(2018, 6, 2, 12))
       Metricks::Models::Metric.record(TotalPotatoes, amount: 500, time: Time.utc(2019, 6, 2, 12))

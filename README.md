@@ -87,11 +87,26 @@ class Metrics::SalesByCountry < Metricks::Types::Cumulative
 end
 ```
 
-Once you have added an association to a type, you can pass it when recording metrics.
+Once you have added an association to a type, you can pass it when recording metrics. Metricks will handle serializing your model when recording and deserializing when it comes back out again.
 
 ```ruby
 country = Country.find_by_name('Sweden')
 Metrics::SalesByCountry.record(associations: {country: country})
+```
+
+You can also serialize the values from a hash usinng the `map` option.
+
+```ruby
+class Metrics::SalesByCurrency < Metricks::Types::Cumulative
+
+  CURRENCIES = {usd: 1, gbp: 2, eur: 3}
+
+  id 45
+  association 1, :currency, required: true, map: CURRENCIES
+end
+
+set = Metrics::SalesByCurrency.gather(:hour, associations: {currency: :eur})
+set = Metrics::SalesByCurrency.gather(:hour, associations: {currency: :gbp})
 ```
 
 ### Getting data
