@@ -25,7 +25,7 @@ rake db:migrate
 
 There are two key types of metric: evented or cumulative. By default, all metrics stored are evented which means they represent an event happening (for example an invoice being raised, a user being created or a product being sold). A cumulative metric stores values that increase or decrease (for example total revenue, MRR or number of active users).
 
-Each type of metric you wish to store is represented by a class which inherits from either `Metricks::Types::Evented` or `Metrics::Types::Cumulative`. You can put these anywhere in your application that takes your fancy. Personally, I quite like `app/models/metrics/*` the choice is yours - putting all metrics in their own `Metrics` namespace is a good idea for readability later.
+Each type of metric you wish to store is represented by a class which inherits from either `Metricks::Types::Evented` or `Metricks::Types::Cumulative`. You can put these anywhere in your application that takes your fancy. Personally, I quite like `app/models/metrics/*` the choice is yours - putting all metrics in their own `Metrics` namespace is a good idea for readability later.
 
 ### Recording metrics
 
