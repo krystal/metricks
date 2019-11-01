@@ -118,6 +118,14 @@ describe Metricks::Models::Metric do
         expect(e.code).to eq 'MissingAssociation'
       end
     end
+
+    it 'should map to an appropriate integer if association has a map' do
+      m = Metricks::Models::Metric.record(MetricWithAssociationWithMapping, associations: {field: 'Main Field'})
+      expect(m.association_1).to eq 1
+
+      m = Metricks::Models::Metric.record(MetricWithAssociationWithMapping, associations: {field: 'Other Field'})
+      expect(m.association_1).to eq 2
+    end
   end
 
   context '.latest' do

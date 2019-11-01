@@ -35,3 +35,9 @@ end
 
 class MetricWithoutID < Metricks::Types::Evented
 end
+
+class MetricWithAssociationWithMapping < Metricks::Types::Evented
+  id 60
+
+  association 1, :field, map: { 'Main Field' => 1, 'Other Field' => 2 }
+end

@@ -40,7 +40,9 @@ module Metricks
           raise Metricks::Error.new('InvalidAssociationForResolution', "The association #{assoc_name} is not valid for #{self}")
         end
 
-        if assoc[:model]
+        if map = assoc[:map]
+          map.invert
+        elsif assoc[:model]
           # If the association defines a model, we can try and resolve these using that
           scope = @association[:model].constantize.where(id: integers)
           scope.each_with_object({}) do |obj, hash|
@@ -48,6 +50,25 @@ module Metricks
           end
         else
           {}
+        end
+      end
+
+      # Serialize a given association to a value that can be stored in an
+      # association column
+      #
+      # @param assoc_name [Symbol]
+      # @param value [Object]
+      # @return [Integer, nil]
+      def serialize_association_value(assoc_name, value)
+        return nil if value.blank?
+
+        assoc = associations[assoc_name]
+        if map = assoc[:map]
+          map[value]
+        elsif assoc[:model]
+          value.is_a?(ActiveRecord::Base) ? value.id : value.to_i
+        else
+          value
         end
       end
 
@@ -73,10 +94,8 @@ module Metricks
 
         associations.each do |assoc_name, assoc_details|
           if given_associations && association = given_associations[assoc_name.to_sym]
-            if association.is_a?(ActiveRecord::Base)
-              association = association.id
-            end
-            metric.public_send("association_#{assoc_details[:slot]}=", association.to_i)
+            association_value = serialize_association_value(assoc_name, association)
+            metric.public_send("association_#{assoc_details[:slot]}=", association_value)
           elsif assoc_details[:required]
             raise Metricks::Error.new('MissingAssociation', message: "The :#{assoc_name} association was not provided but is required")
           end
