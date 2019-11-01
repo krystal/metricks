@@ -79,7 +79,16 @@ module Metricks
       # @param options [Hash] the options provided to the `record` method
       # @raise [Metricks::Error]
       # @return [void]
-      def on_record(_metric, _options)
+      def before_record(_metric, _options)
+        nil
+      end
+
+      # Executed after a metric has been recorded (not in the same transaction).
+      #
+      # @param metric [Metricks::Models::Metric]
+      # @param options [Hash] the options provided to the `record` method
+      # @return [void]
+      def after_record(_metric, _options)
         nil
       end
 

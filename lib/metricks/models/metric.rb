@@ -36,7 +36,7 @@ module Metricks
           metric.type = type.id
           metric.time = options[:time] || Time.current
 
-          type.on_record(metric, options)
+          type.before_record(metric, options)
           type.copy_associations(metric, options[:associations])
 
           metric.amount ||= options[:amount] || 1
@@ -55,6 +55,8 @@ module Metricks
           else
             metric.save!
           end
+
+          type.after_record(metric, options)
 
           metric
         end
