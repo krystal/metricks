@@ -9,8 +9,6 @@ Gem::Specification.new do |s|
   s.version       = Metricks::VERSION
   s.files         = Dir.glob('{lib,db,app}/**/*')
   s.require_paths = ['lib']
-  s.cert_chain    = ['certs/adamcooke.pem']
-  s.signing_key   = File.expand_path('~/.gem/signing-key.pem') if $PROGRAM_NAME =~ /gem\z/
   s.authors       = ['Adam Cooke']
   s.email         = ['me@adamcooke.io']
   s.add_runtime_dependency 'activerecord', '>= 5.0', '< 7.0'
