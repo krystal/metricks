@@ -9,7 +9,7 @@ The library provides the tools to define multiple types of metrics, record them 
 To get started, add the following to your Gemfile and run `bundle install`.
 
 ```ruby
-source 'https://rubygems.pkg.github.com/adamcooke' do
+source 'https://rubygems.pkg.github.com/krystal' do
   gem 'metricks', '>= 1.0.0', '< 2.0'
 end
 ```
