@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    metricks (1.0.3)
+    metricks (1.0.2)
       activerecord (>= 5.0, < 8.0)
       with_advisory_lock (>= 4.6, < 5.0)
 
