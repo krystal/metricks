@@ -1,16 +1,19 @@
+# frozen_string_literal: true`
+
 require File.expand_path('lib/metricks/version', __dir__)
 
-Gem::Specification.new do |s|
-  s.name          = 'metricks'
-  s.description   = 'An ActiveRecord backend for recording and gathering metrics'
-  s.summary       = s.description
-  s.homepage      = 'https://github.com/adamcooke/metricks'
-  s.licenses      = ['MIT']
-  s.version       = Metricks::VERSION
-  s.files         = Dir.glob('{lib,db,app}/**/*')
-  s.require_paths = ['lib']
-  s.authors       = ['Adam Cooke']
-  s.email         = ['me@adamcooke.io']
-  s.add_runtime_dependency 'activerecord', '>= 5.0'
-  s.add_runtime_dependency 'with_advisory_lock', '>= 4.6', '< 5.0'
+Gem::Specification.new do |gem|
+  gem.name          = 'metricks'
+  gem.description   = 'An ActiveRecord backend for recording and gathering metrics'
+  gem.summary       = gem.description
+  gem.homepage      = 'https://github.com/krystal/metricks'
+  gem.licenses      = ['MIT']
+  gem.version       = Metricks::VERSION
+  gem.files         = Dir.glob('{lib,db,app}/**/*')
+  gem.require_paths = ['lib']
+  gem.authors       = ['Krystal']
+  gem.email         = ['help@krystal.uk']
+  gem.required_ruby_version = '>= 2.7'
+  gem.add_runtime_dependency 'activerecord', '>= 5.0'
+  gem.add_runtime_dependency 'with_advisory_lock', '>= 4.6', '< 5.0'
 end

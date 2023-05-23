@@ -1,1 +1,8 @@
+## MAC OS
+.DS_Store
+
+## Ignore project generated files
 .lock*
+
+## Ignore lock file
+Gemfile.lock
