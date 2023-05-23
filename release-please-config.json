@@ -1,0 +1,15 @@
+{
+  "bootstrap-sha": "79f816980073ecabc07b81eeb307ee9e2024621b",
+  "packages": {
+    ".": {
+      "release-type": "ruby",
+      "version-file": "lib/metricks/version.rb",
+      "changelog-path": "CHANGELOG.md",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": true,
+      "draft": false,
+      "prerelease": false
+    }
+  },
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
+}
