@@ -4,20 +4,20 @@ Metricks is an ActiveRecord-powered backend for storing historical numeric metri
 
 The library provides the tools to define multiple types of metrics, record them in the database as well as providing tools to aggregate the results and run comparisons on different time periods.
 
-## Supported Ruby and Ruby on Rails versions
+## Supported Ruby and Active Record versions
 
 Supported Ruby versions include:
 
 - 2.7
 - 3.0
 - 3.1
-- 3.2
 
-Supported Ruby on Rails versions include:
+Supported Active Record versions include:
 
-- 5
-- 6
-- 7
+- 5.2
+- 6.0
+- 6.1
+- 7.0
 
 ## Installation
 

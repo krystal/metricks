@@ -2,7 +2,12 @@ $LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
 
 require 'active_record'
 ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: ':memory:'
-ActiveRecord::MigrationContext.new(File.expand_path('../db/migrate', __dir__)).migrate
+
+if ActiveRecord::VERSION::MAJOR == 6
+  ActiveRecord::MigrationContext.new(File.expand_path('../db/migrate', __dir__), ActiveRecord::SchemaMigration).migrate
+else
+  ActiveRecord::MigrationContext.new(File.expand_path('../db/migrate', __dir__)).migrate
+end
 
 require 'metricks'
 require_relative './example_types'
