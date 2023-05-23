@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
   gem.authors       = ['Krystal']
   gem.email         = ['help@krystal.uk']
-  gem.required_ruby_version = '>= 2.7'
+  gem.required_ruby_version = '>= 2.7', '< 3.2'
   gem.add_runtime_dependency 'activerecord', '>= 5.0'
   gem.add_runtime_dependency 'with_advisory_lock', '>= 4.6', '< 5.0'
 end
