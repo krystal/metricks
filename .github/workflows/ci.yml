@@ -22,9 +22,9 @@ jobs:
           ruby-version: ${{ matrix.ruby_version }}
           bundler-cache: true
       - name: Install dependencies
-        run: bundle install
+        run: bundle install && bundle exec appraisal install
       - name: Run Tests
-        run: bundle exec rspec
+        run: bundle exec appraisal rspec
 
   release-please:
     name: Release Please
