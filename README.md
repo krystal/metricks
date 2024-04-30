@@ -227,3 +227,10 @@ compared_point.sum.percentage_change  # => The % change between 2019-01 and 2018
 # In addition to `sum`, there is also `count` and `last` as you expect from any
 # other point.
 ```
+
+## Run the tests
+
+To run the tests you can use the following commands from the [appraisal gem](https://github.com/thoughtbot/appraisal):
+
+- `bundle exec appraisal install`
+- `bundle exec appraisal rspec`

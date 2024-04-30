@@ -67,7 +67,7 @@ module Metricks
         # @return [Float]
         def latest(type, **options)
           scope = self.last(type, **options)
-          value = scope.pluck(:amount)&.first || 0.0
+          value = scope.select(:amount).first&.amount || 0.0
           type.transform_amount(value, options[:associations])
         end
 
