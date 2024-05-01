@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/krystal/metricks/compare/v1.1.0...v1.1.1) (2024-05-01)
+
+
+### Performance Improvements
+
+* improve query performance for Metric.latest ([#18](https://github.com/krystal/metricks/issues/18)) ([1974d7b](https://github.com/krystal/metricks/commit/1974d7b7612b26a6901d2c0d414dc94ced9416c6))
+
 ## [1.1.0](https://github.com/krystal/metricks/compare/v1.0.2...v1.1.0) (2023-05-23)
 
 
