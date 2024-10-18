@@ -9,3 +9,6 @@ gemfiles
 
 ## Ignore lock file
 Gemfile.lock
+
+# Ignore all logfiles
+/log/*

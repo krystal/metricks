@@ -18,6 +18,7 @@ Supported Active Record versions include:
 - 6.0
 - 6.1
 - 7.0
+- 7.1
 
 ## Installation
 
@@ -26,6 +27,7 @@ To get started, add the following to your Gemfile and run `bundle install`.
 ```ruby
 source "https://rubygems.pkg.github.com/krystal" do
   gem 'metricks', '>= 1.0.0', '< 2.0'
+  gem 'with_advisory_lock' # optional, see below
 end
 ```
 
@@ -35,6 +37,24 @@ Once the gem is installed, you can copy the migrations into your application and
 rake metricks:install:migrations
 rake db:migrate
 ```
+
+### with_advisory_lock
+
+By default Metricks expects you to have the [with_advisory_lock gem](https://github.com/ClosureTree/with_advisory_lock/) installed in your application. This is used to ensure that metrics are stored accurately, refer to the gem itself for details of how the locking works.
+
+If you do not wish to use this gem, you can provide your own locking mechanism in an initializer. The arguments passed to `with_lock` will match the method signature of `with_advisory_lock`.
+
+```ruby
+# config/initializers/metricks.rb
+Rails.application.config.metricks.with_lock = proc do |key, opts, block|
+  opts ||= {}
+  timeout_seconds = opts[:timeout_seconds] || 60
+
+  MyCustomLock.with_lock(key: key, timeout_seconds: timeout_seconds, &block)
+end
+```
+
+However if you're happy to use with_advisory_lock, you don't need to create an initializer.
 
 ## Usage
 

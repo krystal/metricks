@@ -1,4 +1,4 @@
-require 'with_advisory_lock'
+require 'metricks/lock'
 require 'metricks/gatherer'
 require 'metricks/error'
 require 'metricks/compared_set'
@@ -42,7 +42,7 @@ module Metricks
           metric.amount ||= options[:amount] || 1
 
           if type.cumulative?
-            with_advisory_lock 'AddCumulativeMetric' do
+            ::Metricks::Lock.with_lock 'AddCumulativeMetric' do
               existing = self.last(type, after: metric.time, associations: options[:associations])
               if existing.present?
                 raise Metricks::Error.new('CannotAddHistoricalCumulativeMetrics', message: "Nope.")
