@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/krystal/metricks/compare/v1.1.1...v1.2.0) (2024-12-17)
+
+
+### Features
+
+* allow custom locking mechanism ([052d2ad](https://github.com/krystal/metricks/commit/052d2ad4428e7ec8fb9f1793b55e8cfc5f4e60bc))
+
 ## [1.1.1](https://github.com/krystal/metricks/compare/v1.1.0...v1.1.1) (2024-05-01)
 
 
