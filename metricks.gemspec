@@ -15,5 +15,4 @@ Gem::Specification.new do |gem|
   gem.email         = ['help@krystal.uk']
   gem.required_ruby_version = '>= 2.7'
   gem.add_runtime_dependency 'activerecord', '>= 5.0'
-  gem.add_runtime_dependency 'with_advisory_lock', '>= 4.6', '< 5.0'
 end

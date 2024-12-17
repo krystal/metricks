@@ -1,7 +1,12 @@
 require 'spec_helper'
 require 'metricks/models/metric'
+require 'with_advisory_lock'
 
 describe Metricks::Models::Metric do
+  before do
+    Metricks::Lock.with_lock = nil # ensure it's reset from other specs, set to nil will use the default locking
+  end
+
   context 'a valid un-saved metric' do
     subject(:metric) do
       Metricks::Models::Metric.new(type: PotatoesPicked.id, amount: 10.0)

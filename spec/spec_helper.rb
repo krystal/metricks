@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
 
+require 'rails'
 require 'active_record'
 ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: ':memory:'
 
@@ -16,4 +17,7 @@ RSpec.configure do |config|
   config.after(:each) do
     Metricks::Models::Metric.delete_all
   end
+
+  config.full_backtrace = true
+
 end
